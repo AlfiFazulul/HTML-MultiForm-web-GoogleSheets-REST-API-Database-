@@ -43,7 +43,7 @@ Aplikasi web multiform ringan dan responsif untuk mengelola data kategori, terhu
 3. Deploy Google Apps Script sebagai Web App dan ambil URL-nya
 4. Masukkan `scriptURL` tersebut di semua file `.html` yang butuh koneksi ke API
 6. Apps Script menerima data dan menyimpannya per kategori
-7. silakan email untuk contoh apsscript nya ke @muhammadalfifauzul
+7. silakan email untuk contoh apsscript dan database spreadshetnya nya ke @muhammadalfifauzul
 
 ## 📊 Contoh Struktur Database Spreadsheet
 note: sesuaikan dengan kategori/multi form kalian 
