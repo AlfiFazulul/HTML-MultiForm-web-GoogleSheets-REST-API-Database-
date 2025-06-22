@@ -12,7 +12,7 @@
 
     const loginTime = parseInt(localStorage.getItem("loginTimestamp") || "0");
     const now = Date.now();
-    const maxSession = 15 * 60 * 1000;
+    const maxSession = 60 * 60 * 1000;
 
     if (now - loginTime > maxSession) {
       localStorage.removeItem("loggedUser");
