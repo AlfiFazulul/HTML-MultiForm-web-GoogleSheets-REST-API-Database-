@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  
+  <meta charset="UTF-8">
+  <title>Form NOC</title>
+  <script>
+    const userData = localStorage.getItem("loggedUser");
+    if (!userData) {
+      window.location.href = "login.html";
+    }
+
+    const loginTime = parseInt(localStorage.getItem("loginTimestamp") || "0");
+    const now = Date.now();
+    const maxSession = 15 * 60 * 1000;
+
+    if (now - loginTime > maxSession) {
+      localStorage.removeItem("loggedUser");
+      localStorage.removeItem("loginTimestamp");
+      alert("⏰ Sesi login telah habis. Silakan login kembali.");
+      window.location.href = "login.html";
+    }
+
+    function logout() {
+      localStorage.removeItem("loggedUser");
+      localStorage.removeItem("loginTimestamp");
+      window.location.href = "login.html";
+    }
+  </script>
+   <link rel="stylesheet" href="style.css">
+   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+</head>
+<body>
+  <p style="text-align:right; font-weight:bold;">
+    Login sebagai: <span id="userDisplay"></span>
+  </p>
+  <div style="text-align:right; margin-bottom:10px;">
+    <button onclick="logout()" style="background:#007bff; color:#fff; padding:10px 20px; border:none; border-radius:8px; cursor:pointer;">
+      Logout
+    </button>
+  </div>
+  
+  
+  <script>
+    const user = JSON.parse(localStorage.getItem("loggedUser") || "{}");
+    document.getElementById("userDisplay").innerText = user.username || "Tidak diketahui";
+  </script>
+  
+<div class="card">
+  <h2>Form NOC</h2>
+
+  <div class="form-group">
+    <label>Kategori Penanganan *</label>
+    <div class="kategori-button-group">
+      <button type="button" class="kategori-btn" onclick="tampilkanForm('komplen', this)">Komplen</button>
+      <button type="button" class="kategori-btn" onclick="tampilkanForm('expired', this)">Expired</button>
+      <button type="button" class="kategori-btn" onclick="tampilkanForm('ont', this)">ONT</button>
+      <button type="button" class="kategori-btn" onclick="tampilkanForm('metro', this)">Metro</button>
+    </div>
+  </div>
+  
+  
+
+  <!-- FORM KOMPLAIN -->
+  <div id="form-komplen" class="form-section">
+    <h3>Form Pelanggan Komplain</h3>
+    <p>Khusus untuk pencatatan pelanggan yang mengalami masalah</p>
+  
+    <!-- ID dan cari -->
+    <div class="form-group inline">
+      <div style="flex:1">
+        <label for="id_komplain">ID</label>
+        <input type="text" id="id_komplain" placeholder="Masukkan ID">
+      </div>
+      <button type="button" id="btnCariKomplain" class="btn btn-primary" onclick="cariDataKomplen()">Cari Data</button>
+    </div>
+  
+    <!-- Data pelanggan -->
+    <div class="form-group"><label>Nama</label><input type="text" id="nama" readonly></div>
+    <div class="form-group"><label>Alamat</label><input type="text" id="alamat" readonly></div>
+    <div class="form-group"><label>No HP</label><input type="text" id="nohp" readonly></div>
+    <div class="form-group"><label>Site</label><input type="text" id="site_komplain" readonly></div>
+    <div class="form-group"><label>Type</label><input type="text" id="type_komplain" readonly></div>
+  
+    <!-- Tambahan field -->
+    <div class="form-group">
+      <label for="tanggal_komplain">Tanggal Komplain</label>
+      <input type="date" id="tanggal_komplain">
+    </div>
+  
+  
+    
+    <div class="form-group">
+      <label for="tipe_ont_keluhan">Tipe ONT Keluhan</label>
+      <select id="tipe_ont_keluhan">
+        <option value="">Pilih</option>
+        <option value="F609">F609</option>
+        <option value="F670L">F670L</option>
+        <option value="F660">F660</option>
+        <option value="F612W">F612W</option>
+        <option value="F670">F670</option>
+        <option value="F620">F620</option>
+        <option value="HUAWEI">HUAWEI</option>
+        <option value="FIBERHOME">FIBERHOME</option>
+        <option value="ODP">ODP</option>
+        <option value="PON">PON</option>
+      </select>
+    </div>
+    
+    <div class="form-group mb-3">
+      <label class="form-label fw-semibold">Keluhan Pelanggan:</label>
+    
+      <div class="row">
+        <!-- Kolom kiri -->
+        <div class="col-md-6">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" name="keluhan_pelanggan" value="Tidak ada Internet" id="keluhan1">
+            <label class="form-check-label" for="keluhan1">Tidak ada Internet</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" name="keluhan_pelanggan" value="Bandwidth penuh" id="keluhan2">
+            <label class="form-check-label" for="keluhan2">Bandwidth penuh</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" name="keluhan_pelanggan" value="ONT Restart Sendiri" id="keluhan3">
+            <label class="form-check-label" for="keluhan3">ONT Restart Sendiri</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" name="keluhan_pelanggan" value="IP Expired" id="keluhan4">
+            <label class="form-check-label" for="keluhan4">IP Expired</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" name="keluhan_pelanggan" value="Expired, Terlewat Perpanjangan admin cabang" id="keluhan5">
+            <label class="form-check-label" for="keluhan5">Expired, Terlewat Perpanjangan admin cabang</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" name="keluhan_pelanggan" value="Expired, User Belum Bayar" id="keluhan6">
+            <label class="form-check-label" for="keluhan6">Expired, User Belum Bayar</label>
+          </div>
+        </div>
+    
+        <!-- Kolom kanan -->
+        <div class="col-md-6">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" name="keluhan_pelanggan" value="Lemot" id="keluhan7">
+            <label class="form-check-label" for="keluhan7">Lemot</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" name="keluhan_pelanggan" value="User HOTSPOT penuh" id="keluhan8">
+            <label class="form-check-label" for="keluhan8">User HOTSPOT penuh</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" name="keluhan_pelanggan" value="Tidak ada Nama wifi" id="keluhan9">
+            <label class="form-check-label" for="keluhan9">Tidak ada Nama wifi</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" name="keluhan_pelanggan" value="Expired, Kecepatan Bayar" id="keluhan10">
+            <label class="form-check-label" for="keluhan10">Expired, Kecepatan Bayar</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" name="keluhan_pelanggan" value="Expired, Terlewat Perpanjangan NOC" id="keluhan11">
+            <label class="form-check-label" for="keluhan11">Expired, Terlewat Perpanjangan NOC</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="keluhan_lain_checkbox" onchange="toggleKeluhanLain()">
+            <label class="form-check-label" for="keluhan_lain_checkbox">Lainnya</label>
+          </div>
+        </div>
+      </div>
+    
+      <!-- Input teks "lainnya" -->
+      <div id="keluhan_lain_wrapper" class="mt-3" style="display: none;">
+        <input type="text" id="keluhan_lain_text" class="form-control" placeholder="Masukkan keluhan lain...">
+      </div>
+    </div>
+    
+    
+    
+    
+    
+    
+    <div class="form-group mb-3">
+      <label class="form-label fw-semibold">Penanganan Pelanggan:</label>
+    
+      <div class="row">
+        <!-- Kolom kiri -->
+        <div class="col-md-6">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" name="penanganan_pelanggan" value="Restart ONT" id="pen1">
+            <label class="form-check-label" for="pen1">Restart ONT</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" name="penanganan_pelanggan" value="Melakukan Pemeriksaan" id="pen2">
+            <label class="form-check-label" for="pen2">Melakukan Pemeriksaan</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" name="penanganan_pelanggan" value="Info Bandwidth Full" id="pen3">
+            <label class="form-check-label" for="pen3">Info Bandwidth Full</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" name="penanganan_pelanggan" value="Refresh PPPOE" id="pen4">
+            <label class="form-check-label" for="pen4">Refresh PPPOE</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" name="penanganan_pelanggan" value="Hapus Sceduler" id="pen5">
+            <label class="form-check-label" for="pen5">Hapus Sceduler</label>
+          </div>
+        </div>
+    
+        <!-- Kolom kanan -->
+        <div class="col-md-6">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" name="penanganan_pelanggan" value="Hapus Sceduler dan Save ulang biling" id="pen6">
+            <label class="form-check-label" for="pen6">Hapus Sceduler dan Save ulang biling</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" name="penanganan_pelanggan" value="Perpanjang Masa Aktif" id="pen7">
+            <label class="form-check-label" for="pen7">Perpanjang Masa Aktif</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" name="penanganan_pelanggan" value="Info Masa Aktif ke user" id="pen8">
+            <label class="form-check-label" for="pen8">Info Masa Aktif ke user</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" name="penanganan_pelanggan" value="Ganti Password/Nama wifi" id="pen9">
+            <label class="form-check-label" for="pen9">Ganti Password/Nama wifi</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="penanganan_lain_checkbox" onchange="togglePenangananLain()">
+            <label class="form-check-label" for="penanganan_lain_checkbox">Lainnya:</label>
+          </div>
+        </div>
+      </div>
+    
+      <!-- Input teks jika pilih 'lainnya' -->
+      <div id="penanganan_lain_wrapper" class="mt-3" style="display: none;">
+        <input type="text" id="penanganan_lain_text" class="form-control" placeholder="Masukkan penanganan lain...">
+      </div>
+    </div>
+    
+    
+  
+    <!-- Tombol submit -->
+    <button type="button" id="btnSubmitKomplain" class="btn btn-success" onclick="submitKomplain()">Submit</button>
+  </div>
+  
+
+  <!-- FORM REMINDER EXPIRED -->
+  <div id="form-expired" class="form-section">
+    <h3>Reminder Expired</h3>
+    <p>Berfungsi untuk pengingat yang bayar kecepetan</p>
+    <div class="form-group inline">
+      <div style="flex:1">
+        <label for="id_reminder">ID</label>
+        <input type="text" id="id_reminder" placeholder="Masukkan ID">
+      </div>
+      <button type="button" id="btnCariReminder" class="btn btn-primary" onclick="cariDataReminder()">Cari Data</button>
+    </div>
+    <div class="form-group"><label>Nama</label><input type="text" id="nama_reminder"readonly></div>
+    <div class="form-group"><label>Alamat</label><input type="text" id="alamat_reminder"readonly></div>
+    <div class="form-group"><label>Site</label><input type="text" id="site_expired"readonly></div>
+    <div class="form-group"><label>Type</label><input type="text" id="type_expired"readonly></div>
+    <div class="form-group"><label>Tanggal Reminder</label><input type="date" id="tanggal_reminder"></div>
+    <div class="form-group"><label>Tanggal Expired</label><input type="date" id="tanggal_expired"></div>
+    <button type="button" id="btnSubmitReminder" class="btn btn-success" onclick="submitReminder()">Submit</button>
+  </div>
+
+  <!-- FORM PENARIKAN ONT -->
+  <div id="form-ont" class="form-section">
+    <h3>Form Penarikan ONT</h3>
+    <p>Digunakan untuk pengajuan penarikan perangkat ONT pelanggan.</p>
+    <div class="form-group inline">
+      <div style="flex:1">
+        <label for="id_ont">ID</label>
+        <input type="text" id="id_ont" placeholder="Masukkan ID">
+      </div>
+      <button type="button" id="btnCariONT" class="btn btn-primary" onclick="cariDataONT()">Cari Data</button>
+    </div>
+    <div class="form-group"><label>Nama</label><input type="text" id="nama_ont"readonly></div>
+    <div class="form-group"><label>Alamat</label><input type="text" id="alamat_ont"readonly></div>
+    <div class="form-group"><label>No HP</label><input type="text" id="nohp_ont"readonly></div>
+    <div class="form-group"><label>Site</label><input type="text" id="site_ont"readonly></div>
+    <div class="form-group"><label for="sn_ont">SN (Serial Number)</label><input type="text" id="sn_ont"></div>
+    <div class="form-group"><label for="tanggal_penarikan">Tanggal Penarikan</label><input type="date" id="tanggal_penarikan"></div>
+    <div class="form-group"><label for="type_ont">Type ONT</label>
+      <select id="type_ont">
+        <option value="">Pilih</option>
+        <option value="F612W">F612W</option>
+        <option value="F670L">F670L</option>
+        <option value="F609">F609</option>
+      </select>
+    </div>
+    <div class="form-group"><label for="alasan_ont">Alasan Penarikan</label>
+      <select id="alasan_ont" onchange="toggleInputLainnya(this)">
+        <option value="">Pilih</option>
+        <option value="Pindah Rumah">Pindah Rumah</option>
+        <option value="Permasalahan Ekonomi">Permasalahan Ekonomi</option>
+        <option value="Jarang Digunakan">Jarang Digunakan</option>
+        <option value="Penangan Teknis Lama">Penangan Teknis Lama</option>
+        <option value="Penangan NOC/Admin Lama">Penangan NOC/Admin Lama</option>
+        <option value="Jaringan Kurang Stabil">Jaringan Kurang Stabil</option>
+        <option value="Ganti Provider">Ganti Provider</option>
+        <option value="Lainnya">Yang Lain (isi sendiri)</option>
+      </select>
+      <input type="text" id="alasan_lain_ont" placeholder="Tulis alasan lain..." style="display:none; margin-top:10px;">
+    </div>
+    <button type="button" id="btnSubmitONT" class="btn btn-success" onclick="submitONT()">Submit</button>
+  </div>
+  <!-- FORM PENARIKAN METRO -->
+<div id="form-metro" class="form-section">
+  <h3>Form Penarikan Metro</h3>
+  <p>Melaporkan Permasalahan Metro </p>
+  <div class="form-group">
+    <label for="tanggal_komplen_metro">Tanggal Komplen Metro</label>
+    <input type="date" id="tanggal_komplen_metro">
+  </div>
+  <div class="form-group">
+    <label for="komplen_metro">Komplen Metro</label>
+    <select id="komplen_metro">
+      <option value="">Pilih</option>
+      <option value="BUGEL-POWERTEL">BUGEL-POWERTEL</option>
+      <option value="BUGEL-FMI">BUGEL-FMI</option>
+      <option value="SITANALA-POWERTEL">SITANALA-POWERTEL</option>
+      <option value="SITANALA-FMI">SITANALA-FMI</option>
+      <option value="CIKARANG-FMI-685">CIKARANG-FMI-685</option>
+      <option value="CIKARANG-FMI-684">CIKARANG-FMI-684</option>
+      <option value="CIKARANG-IFORTE">CIKARANG-IFORTE</option>
+      <option value="VILLA-PLB-MAIN">VILLA-PLB-MAIN</option>
+      <option value="VILLA-PLB-BACKUP">VILLA-PLB-BACKUP</option>
+      <option value="TIGARAKSA-RAJEG">TIGARAKSA-RAJEG</option>
+      <option value="TIGARAKSA-SURGE">TIGARAKSA-SURGE</option>
+      <option value="KIRANA-IFORTE">KIRANA-IFORTE</option>
+      <option value="LAMPUNG-XL">LAMPUNG-XL</option>
+      <option value="LAMPUNG-IOH">LAMPUNG-IOH</option>
+      <option value="BANJARNEGARA-IOH">BANJARNEGARA-IOH</option>
+      <option value="SRAGEN-IOH">SRAGEN-IOH</option>
+      <option value="SUREN-IOH">SUREN-IOH</option>
+      <option value="PARUNGPANJANG-TIS">PARUNGPANJANG-TIS</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label for="keterangan_metro">Keterangan</label>
+    <textarea id="keterangan_metro" rows="3" placeholder="Tulis keterangan..."></textarea>
+  </div>
+  <button type="button" id="btnSubmitMetro" class="btn btn-success" onclick="submitMetro()">Submit</button>
+</div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
