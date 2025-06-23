@@ -97,7 +97,6 @@ function submitKomplain() {
   const nohp = document.getElementById('nohp').value.trim();
   const site = document.getElementById('site_komplain').value.trim();
   const type = document.getElementById('type_komplain').value.trim();
-  const tanggalKomplain = document.getElementById('tanggal_komplain').value.trim();
   const tipeONT = document.getElementById('tipe_ont_keluhan').value.trim();
   const loggedUser = JSON.parse(localStorage.getItem("loggedUser"));
   const username = loggedUser?.username || "Anonim";
@@ -129,7 +128,7 @@ function submitKomplain() {
   const penanganan = penangananList.join(', ');
 
   // ✅ Validasi semua field wajib
-  if (!id || !nama || !alamat || !nohp || !site || !type || !tanggalKomplain || !tipeONT || !keluhan || !penanganan) {
+  if (!id || !nama || !alamat || !nohp || !site || !type  || !tipeONT || !keluhan || !penanganan) {
     alert('❗ Semua field wajib diisi.');
     return;
   }
@@ -149,7 +148,6 @@ function submitKomplain() {
   formData.append("Phone", nohp);
   formData.append("Router", site);
   formData.append("Type", type);
-  formData.append("Tanggal_Komplain", tanggalKomplain);
   formData.append("Tipe_ONT_Keluhan", tipeONT);
   formData.append("Keluhan_Pelanggan", keluhan);
   formData.append("Penanganan_Pelanggan", penanganan);
@@ -341,7 +339,7 @@ function toggleLainnya(tipe) {
     // 🔄 Reset semua input text dan select
     const inputIds = [
       'id_komplain', 'nama', 'alamat', 'nohp', 'site_komplain',
-      'type_komplain', 'tanggal_komplain', 'tipe_ont_keluhan',
+      'type_komplain', 'tipe_ont_keluhan',
       'penanganan_lain', 'penanganan_pelanggan', 'keluhan_lain_text'
     ];
     inputIds.forEach(id => {
