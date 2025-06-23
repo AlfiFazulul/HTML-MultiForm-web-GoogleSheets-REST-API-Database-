@@ -183,14 +183,13 @@ function submitReminder() {
   const site = document.getElementById('site_expired').value.trim();
   const type = document.getElementById('type_expired').value.trim();
   const tanggalExpired = document.getElementById('tanggal_expired').value.trim();
-  const tanggalReminder = document.getElementById('tanggal_reminder').value.trim();
   const btn = document.getElementById('btnSubmitReminder');
   const originalText = btn.innerHTML;
   const loggedUser = JSON.parse(localStorage.getItem("loggedUser"));
 const username = loggedUser?.username || "Anonim";
 
 
-  if (!id || !nama || !alamat || !site || !type || !tanggalExpired || !tanggalReminder) {
+  if (!id || !nama || !alamat || !site || !type || !tanggalExpired ) {
     alert("❗ Semua field harus diisi.");
     return;
   }
@@ -203,7 +202,6 @@ const username = loggedUser?.username || "Anonim";
   formData.append("Router", site);
   formData.append("Type", type);
   formData.append("Tanggal_Expired", tanggalExpired);
-  formData.append("Tanggal_Reminder", tanggalReminder);
   formData.append("UserInput", username);
 
   btn.innerHTML = 'Mengirim...<span class="loading-spinner"></span>';
@@ -382,7 +380,7 @@ function toggleLainnya(tipe) {
   } else if (kategori === 'expired') {
     ids = [
       'id_reminder', 'nama_reminder', 'alamat_reminder', 'site_expired',
-      'type_expired', 'tanggal_expired', 'tanggal_reminder'
+      'type_expired', 'tanggal_expired',
     ];
     ids.forEach(id => document.getElementById(id).value = '');
 
