@@ -46,13 +46,18 @@ function cariDataReminder() {
   fetch(`${scriptUrl}?id=${id}`)
     .then(res => res.json())
     .then(data => {
+      if (!data || !data.FullName) {
+        alert("❌ Data tidak ditemukan.");
+        return;
+      }
       document.getElementById('nama_reminder').value = data.FullName || '';
       document.getElementById('alamat_reminder').value = data.Address || '';
       document.getElementById('site_expired').value = data.Router || '';
       document.getElementById('type_expired').value = data.Type || '';
     })
-    .catch(() => alert("⚠️ Gagal ambil data."))
+    .catch(() => alert("⚠️ Terjadi kesalahan saat mengambil data."))
     .finally(() => {
+      // Kembalikan tampilan tombol
       btn.innerHTML = originalText;
       btn.disabled = false;
     });
