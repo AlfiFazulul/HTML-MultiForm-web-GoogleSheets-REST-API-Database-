@@ -76,13 +76,18 @@ function cariDataONT() {
   fetch(`${scriptUrl}?id=${id}`)
     .then(res => res.json())
     .then(data => {
+      if (!data || !data.FullName) {
+        alert("❌ Data tidak ditemukan.");
+        return;
+      }
       document.getElementById('nama_ont').value = data.FullName || '';
       document.getElementById('alamat_ont').value = data.Address || '';
       document.getElementById('nohp_ont').value = data.Phone || '';
       document.getElementById('site_ont').value = data.Router || '';
     })
-    .catch(() => alert("⚠️ Gagal ambil data."))
+    .catch(() => alert("⚠️ Terjadi kesalahan saat mengambil data."))
     .finally(() => {
+      // Kembalikan tampilan tombol
       btn.innerHTML = originalText;
       btn.disabled = false;
     });
