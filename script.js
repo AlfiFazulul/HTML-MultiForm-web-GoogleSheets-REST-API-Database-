@@ -1,4 +1,4 @@
-const scriptUrl = 'https://script.google.com/macros/s/AKfycbwiguoCB0_amyplulx-Ho_1ASSwzIg5SMnKGxKvbPwNAXCnlH-0JzsENMiFFB_YBBnR/exec';
+const scriptUrl = 'https://script.google.com/macros/s/AKfycbzY2_K1JLuPp0nI-zeC_5Al9GTaDglBTYV5cVj0FOLcwrFB5QbJEevYMSG8MFV8dRgj/exec';
 
 function cariDataKomplen() {
   const id = document.getElementById('id_komplain').value.trim();
